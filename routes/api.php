@@ -23,7 +23,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
 
     Route::get('customers', [CustomerController::class, 'index']);
     Route::post('customers', [CustomerController::class, 'store']);
-
+    Route::put('customers/{id}', [CustomerController::class, 'update']);
+    Route::delete('customers/{id}', [CustomerController::class, 'destroy']);
 
     Route::post('branch', [BranchController::class, 'store']);
     Route::put('branch/{id}', [BranchController::class, 'update']);
