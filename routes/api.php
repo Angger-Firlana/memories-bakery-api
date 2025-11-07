@@ -12,6 +12,7 @@ use App\Http\Ingredient\Controllers\IngredientsController;
 use App\Http\Customer\Controllers\CustomerController;
 use App\Http\Employee\Controllers\EmployeeController;
 use App\Http\Manager\Controllers\ManagerController;
+use App\Http\Courier\Controllers\CourierController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -23,6 +24,7 @@ Route::get('/role', [RoleController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     Route::apiResource('managers', ManagerController::class);
+    Route::apiResource('couriers', CourierController::class);
 
     //Customer Endpoint
     Route::get('customers', [CustomerController::class, 'index']);
