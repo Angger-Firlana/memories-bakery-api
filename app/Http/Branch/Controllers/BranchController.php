@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Branch\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use Illuminate\Validation\Rule;
@@ -91,7 +92,7 @@ class BranchController extends Controller
                 'email' => [
                     'required',
                     'email',
-                    Rule::unique('branches', 'email')->ignore($id)
+                    Rule::unique('branchs', 'email')->ignore($id)
                 ],
             ]);
 

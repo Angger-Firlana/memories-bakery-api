@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Auth\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Http\Requests\CustomerRequest;
 use Exception;
 
 class AuthController extends Controller
@@ -59,7 +60,7 @@ class AuthController extends Controller
         
     }
 
-     public function register(Request $request)
+     public function register(CustomerRequest $request)
     {
         try {
             // ✅ Validasi input
