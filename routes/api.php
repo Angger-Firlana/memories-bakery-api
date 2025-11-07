@@ -28,7 +28,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     Route::delete('customers/{id}', [CustomerController::class, 'destroy']);
 
     //Employees Endpoint
+    Route::get('employees/{id}', [EmployeeController::class, 'show']);
     Route::get('employees', [EmployeeController::class, 'index']);
+    Route::put('employees/{id}', [EmployeeController::class, 'update']);
     Route::post('employees', [EmployeeController::class, 'store']);
     //Branch Endpoint
     Route::post('branch', [BranchController::class, 'store']);
