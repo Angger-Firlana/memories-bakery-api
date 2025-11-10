@@ -1,66 +1,588 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍞 Kenangan Bakery API Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+RESTful API untuk sistem manajemen **Kenangan Bakery**.  
+API ini mencakup autentikasi, manajemen cabang, unit bahan, bahan baku, pengguna (admin, manager, employee, courier, customer), serta **riwayat bahan baku (ingredient history)**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚙️ Base URL
+```
+http://127.0.0.1:8000/
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Semua endpoint diawali dengan `/api/`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+# 🔑 Auth (/api/auth)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Login (/api/auth/login)
+### Request
+```json
+{
+  "login": "anggerja",
+  "password": "angger12"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Berhasil Login",
+  "user": {
+    "id": 6,
+    "username": "anggerja",
+    "email": "anggera@gmail.com",
+    "email_verified_at": null,
+    "role_id": 1,
+    "created_at": "2025-11-02T08:10:41.000000Z",
+    "updated_at": "2025-11-02T08:10:41.000000Z",
+    "role": {
+      "id": 1,
+      "role_name": "admin",
+      "created_at": null,
+      "updated_at": null
+    }
+  },
+  "token": "7|NNU82L2kilMAF5OYCzeIF8Q4ZNuQO7cOeovxOCZRd91a3f42"
+}
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Register (/api/auth/register)
+### Request
+```json
+{
+  "username": "anggerjaa",
+  "email": "angger1222@gmail.com",
+  "password": "angger12"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Registrasi customer berhasil!",
+  "data": {
+    "user": {
+      "username": "anggerjaa",
+      "email": "angger1222@gmail.com",
+      "role_id": 3,
+      "updated_at": "2025-11-07T04:16:12.000000Z",
+      "created_at": "2025-11-07T04:16:12.000000Z",
+      "id": 7
+    },
+    "token": "8|wOGyGgRBDF3ey4uZhP7sTW0t9KBezB45Tk3jh7Ynfb9e68d0"
+  }
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+# 🏢 Branch (/api/branch)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "name": "Kenangan Bakery Cipinang",
+      "address": "angger12",
+      "city": "Jakarta Timur",
+      "province": "Jakarta",
+      "open": 9,
+      "close": 21,
+      "phone_number": "098475424",
+      "email": "adsfkj@memories.com",
+      "created_at": "2025-11-02T12:35:22.000000Z",
+      "updated_at": "2025-11-02T12:35:22.000000Z"
+    }
+  ]
+}
+```
 
-### Premium Partners
+## POST
+### Request
+```json
+{
+  "name": "Kenangan Bakery Cipinang",
+  "address": "angger12",
+  "city": "Jakarta Timur",
+  "province": "Jakarta",
+  "open": 9,
+  "close": 21,
+  "phone_number": "098475424",
+  "email": "adsfkj@meries.com"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Success add new branch",
+  "data": {
+    "name": "Kenangan Bakery Cipinang",
+    "address": "angger12",
+    "city": "Jakarta Timur",
+    "province": "Jakarta",
+    "open": 9,
+    "close": 21,
+    "phone_number": "098475424",
+    "email": "adsfkj@meries.com",
+    "updated_at": "2025-11-07T04:20:40.000000Z",
+    "created_at": "2025-11-07T04:20:40.000000Z",
+    "id": 2
+  }
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## PUT (/api/branch/{id})
+### Request
+```json
+{
+  "name": "Kenangan Bakery Cipinang",
+  "address": "angger12",
+  "city": "Jakarta Timur",
+  "province": "Jakarta",
+  "open": 9,
+  "close": 21,
+  "phone_number": "098475424",
+  "email": "adsfkj@memories.com"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Branch updated successfully"
+}
+```
 
-## Contributing
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Branch deleted successfully"
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+# 📏 Unit (/api/units)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "unit_name": "spoon"
+    }
+  ]
+}
+```
 
-## Security Vulnerabilities
+## POST
+### Request
+```json
+{ "unit_name": "kg" }
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Unit successfully added",
+  "data": {
+    "unit_name": "kg",
+    "updated_at": "2025-11-07T05:27:52.000000Z",
+    "created_at": "2025-11-07T05:27:52.000000Z",
+    "id": 2
+  }
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## PUT (/api/units/{id})
+```json
+{
+  "success": true,
+  "message": "Unit successfully updated",
+  "data": {
+    "id": 1,
+    "unit_name": "gram"
+  }
+}
+```
 
-## License
+## DELETE (/api/units/{id})
+```json
+{
+  "success": true,
+  "message": "Unit deleted successfully"
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+# 🧂 Ingredient (/api/ingredients)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "unit_id": 1,
+      "name": "Tepung",
+      "price": 50000
+    }
+  ]
+}
+```
+
+## POST
+### Request
+```json
+{
+  "unit_id": 1,
+  "name": "Tepung",
+  "price": 50000
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Ingredient successfully added",
+  "data": {
+    "unit_id": 1,
+    "name": "Tepung",
+    "price": 50000,
+    "id": 1
+  }
+}
+```
+
+## PUT (/api/ingredients/{id})
+```json
+{
+  "success": true,
+  "message": "Ingredient successfully updated",
+  "data": {
+    "id": 1,
+    "unit_id": 1,
+    "name": "Tepang",
+    "price": 50000
+  }
+}
+```
+
+## DELETE (/api/ingredients/{id})
+```json
+{
+  "success": true,
+  "message": "Ingredient successfully deleted"
+}
+```
+
+---
+
+# 🧩 Roles (/api/roles)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Berhasil ambil data",
+  "data": [
+    { "id": 1, "role_name": "admin" },
+    { "id": 2, "role_name": "manager" }
+  ]
+}
+```
+
+## POST
+```json
+{
+  "role_name": "employee"
+}
+```
+## Response
+```json
+{
+  "success": true,
+  "message": "Role berhasil ditambahkan"
+}
+```
+
+## PUT (/api/roles/{id})
+```json
+{
+  "success": true,
+  "message": "Role berhasil diperbarui"
+}
+```
+
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Role berhasil dihapus"
+}
+```
+
+---
+
+# 👤 Customer (/api/customers)
+
+## GET
+```json
+[
+  {
+    "id": 1,
+    "fullname": "Rachel Green",
+    "quickname": "Rach"
+  }
+]
+```
+
+## POST
+### Request
+```json
+{
+  "username": "rachel123",
+  "email": "rachel@example.com",
+  "password": "secret123",
+  "fullname": "Rachel Green",
+  "quickname": "Rach",
+  "address": "Jl. Melati No. 45, Bandung",
+  "phone_number": "081234567890"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Berhasil menambah data customer"
+}
+```
+
+## PUT (/api/customers/{id})
+```json
+{
+  "success": true,
+  "message": "Berhasil mengubah data customer"
+}
+```
+
+## DELETE (/api/customers/{id})
+```json
+{
+  "success": true,
+  "message": "Berhasil menghapus data customer"
+}
+```
+
+---
+
+# 👨‍🍳 Employee (/api/employees)
+
+## GET
+```json
+[
+  {
+    "id": 2,
+    "fullname": "Budi Santoso"
+  }
+]
+```
+
+## POST
+```json
+{
+  "username": "budi23",
+  "email": "budi@examle.com",
+  "password": "rahasia123",
+  "branch_id": 3,
+  "fullname": "Budi Santoso",
+  "address": "Jl. Mawar No. 45, Jakarta Selatan",
+  "phone_number": "081234567890"
+}
+```
+
+## PUT (/api/employees/{id})
+```json
+{
+  "success": true,
+  "message": "Employee updated successfully"
+}
+```
+
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Employee berhasil dihapus"
+}
+```
+
+---
+
+# 👔 Manager (/api/managers)
+## GET
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "fullname": "Angger Firlana Udah Update"
+    }
+  ]
+}
+```
+## POST
+```json
+{
+  "branch_id": 3,
+  "fullname": "Angger Firlana Updated",
+  "address": "Jl. Mawar No. 99, Bekasi",
+  "phone_number": "08987654321",
+  "username": "angger_updated",
+  "email": "angger_updated@example.com",
+  "password": "newpass123",
+  "password_confirmation": "newpass123"
+}
+```
+## PUT (/api/managers/{id})
+```json
+{
+  "success": true,
+  "message": "Manager updated successfully"
+}
+```
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Manager deleted successfully"
+}
+```
+
+---
+
+# 🚚 Courier (/api/couriers)
+## GET
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "fullname": "New courier"
+    }
+  ]
+}
+```
+## POST
+```json
+{
+  "branch_id": 3,
+  "fullname": "New courier",
+  "address": "Jl. Mawar No. 99, Bekasi",
+  "phone_number": "08987654321",
+  "username": "courier",
+  "email": "courieradded@example.com",
+  "password": "newpass123",
+  "password_confirmation": "newpass123"
+}
+```
+## PUT (/api/couriers/{id})
+```json
+{
+  "success": true,
+  "message": "Courier updated successfully"
+}
+```
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Courier deleted successfully"
+}
+```
+
+---
+
+# 🧾 Ingredient History (/api/ingredient-history)
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 2,
+      "branch_id": 3,
+      "received_date": "2025-11-10T00:00:00.000000Z",
+      "quantity": 50,
+      "expired_date": "2025-12-10T00:00:00.000000Z",
+      "status": "new_stock"
+    }
+  ]
+}
+```
+## POST
+```json
+{
+  "branch_id": 3,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "new_stock"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully added",
+  "data": {
+    "branch_id": 3,
+    "received_date": "2025-11-10T00:00:00.000000Z",
+    "quantity": 50,
+    "expired_date": "2025-12-10T00:00:00.000000Z",
+    "status": "new_stock",
+    "id": 2
+  }
+}
+```
+## PUT
+```json
+{
+  "branch_id": 3,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "old_stock"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully updated"
+}
+```
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully deleted"
+}
+```
