@@ -9,20 +9,22 @@ API ini mencakup autentikasi, manajemen cabang, unit bahan, bahan baku, pengguna
 ```
 http://yourdomain.com/api
 ```
+
 Semua endpoint diawali dengan `/api/`.
 
 ---
 
-## 🔑 Auth
-### Login
-**POST** `/auth/login`
+# 🔑 Auth (/api/auth)
+
+## Login (/api/auth/login)
+### Request
 ```json
 {
   "login": "anggerja",
   "password": "angger12"
 }
 ```
-**Response**
+### Response
 ```json
 {
   "success": true,
@@ -31,18 +33,23 @@ Semua endpoint diawali dengan `/api/`.
     "id": 6,
     "username": "anggerja",
     "email": "anggera@gmail.com",
+    "email_verified_at": null,
     "role_id": 1,
+    "created_at": "2025-11-02T08:10:41.000000Z",
+    "updated_at": "2025-11-02T08:10:41.000000Z",
     "role": {
       "id": 1,
-      "role_name": "admin"
+      "role_name": "admin",
+      "created_at": null,
+      "updated_at": null
     }
   },
   "token": "7|NNU82L2kilMAF5OYCzeIF8Q4ZNuQO7cOeovxOCZRd91a3f42"
 }
 ```
 
-### Register
-**POST** `/auth/register`
+## Register (/api/auth/register)
+### Request
 ```json
 {
   "username": "anggerjaa",
@@ -50,7 +57,7 @@ Semua endpoint diawali dengan `/api/`.
   "password": "angger12"
 }
 ```
-**Response**
+### Response
 ```json
 {
   "success": true,
@@ -60,6 +67,8 @@ Semua endpoint diawali dengan `/api/`.
       "username": "anggerjaa",
       "email": "angger1222@gmail.com",
       "role_id": 3,
+      "updated_at": "2025-11-07T04:16:12.000000Z",
+      "created_at": "2025-11-07T04:16:12.000000Z",
       "id": 7
     },
     "token": "8|wOGyGgRBDF3ey4uZhP7sTW0t9KBezB45Tk3jh7Ynfb9e68d0"
@@ -69,10 +78,33 @@ Semua endpoint diawali dengan `/api/`.
 
 ---
 
-## 🏢 Branch
-### GET
-`GET /branch`
-### POST
+# 🏢 Branch (/api/branch)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "name": "Kenangan Bakery Cipinang",
+      "address": "angger12",
+      "city": "Jakarta Timur",
+      "province": "Jakarta",
+      "open": 9,
+      "close": 21,
+      "phone_number": "098475424",
+      "email": "adsfkj@memories.com",
+      "created_at": "2025-11-02T12:35:22.000000Z",
+      "updated_at": "2025-11-02T12:35:22.000000Z"
+    }
+  ]
+}
+```
+
+## POST
+### Request
 ```json
 {
   "name": "Kenangan Bakery Cipinang",
@@ -85,34 +117,136 @@ Semua endpoint diawali dengan `/api/`.
   "email": "adsfkj@meries.com"
 }
 ```
-### PUT
-`PUT /branch/{id}`
-### DELETE
-`DELETE /branch/{id}`
+### Response
+```json
+{
+  "success": true,
+  "message": "Success add new branch",
+  "data": {
+    "name": "Kenangan Bakery Cipinang",
+    "address": "angger12",
+    "city": "Jakarta Timur",
+    "province": "Jakarta",
+    "open": 9,
+    "close": 21,
+    "phone_number": "098475424",
+    "email": "adsfkj@meries.com",
+    "updated_at": "2025-11-07T04:20:40.000000Z",
+    "created_at": "2025-11-07T04:20:40.000000Z",
+    "id": 2
+  }
+}
+```
+
+## PUT (/api/branch/{id})
+### Request
+```json
+{
+  "name": "Kenangan Bakery Cipinang",
+  "address": "angger12",
+  "city": "Jakarta Timur",
+  "province": "Jakarta",
+  "open": 9,
+  "close": 21,
+  "phone_number": "098475424",
+  "email": "adsfkj@memories.com"
+}
+```
+### Response
+```json
+{
+  "success": true,
+  "message": "Branch updated successfully"
+}
+```
+
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Branch deleted successfully"
+}
+```
 
 ---
 
-## 📏 Unit
-### GET
-`GET /units`
-### POST
+# 📏 Unit (/api/units)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "unit_name": "spoon"
+    }
+  ]
+}
+```
+
+## POST
+### Request
 ```json
 { "unit_name": "kg" }
 ```
-### PUT
-`PUT /units/{id}`
+### Response
 ```json
-{ "unit_name": "gram" }
+{
+  "success": true,
+  "message": "Unit successfully added",
+  "data": {
+    "unit_name": "kg",
+    "updated_at": "2025-11-07T05:27:52.000000Z",
+    "created_at": "2025-11-07T05:27:52.000000Z",
+    "id": 2
+  }
+}
 ```
-### DELETE
-`DELETE /units/{id}`
+
+## PUT (/api/units/{id})
+```json
+{
+  "success": true,
+  "message": "Unit successfully updated",
+  "data": {
+    "id": 1,
+    "unit_name": "gram"
+  }
+}
+```
+
+## DELETE (/api/units/{id})
+```json
+{
+  "success": true,
+  "message": "Unit deleted successfully"
+}
+```
 
 ---
 
-## 🧂 Ingredient
-### GET
-`GET /ingredients`
-### POST
+# 🧂 Ingredient (/api/ingredients)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 1,
+      "unit_id": 1,
+      "name": "Tepung",
+      "price": 50000
+    }
+  ]
+}
+```
+
+## POST
+### Request
 ```json
 {
   "unit_id": 1,
@@ -120,41 +254,105 @@ Semua endpoint diawali dengan `/api/`.
   "price": 50000
 }
 ```
-### PUT
-`PUT /ingredients/{id}`
+### Response
 ```json
 {
-  "unit_id": 1,
-  "name": "Tepung Terigu",
-  "price": 50000
+  "success": true,
+  "message": "Ingredient successfully added",
+  "data": {
+    "unit_id": 1,
+    "name": "Tepung",
+    "price": 50000,
+    "id": 1
+  }
 }
 ```
-### DELETE
-`DELETE /ingredients/{id}`
+
+## PUT (/api/ingredients/{id})
+```json
+{
+  "success": true,
+  "message": "Ingredient successfully updated",
+  "data": {
+    "id": 1,
+    "unit_id": 1,
+    "name": "Tepang",
+    "price": 50000
+  }
+}
+```
+
+## DELETE (/api/ingredients/{id})
+```json
+{
+  "success": true,
+  "message": "Ingredient successfully deleted"
+}
+```
 
 ---
 
-## 🧩 Roles
-### GET
-`GET /roles`
-### POST
+# 🧩 Roles (/api/roles)
+
+## GET
 ```json
-{ "role_name": "employee" }
+{
+  "success": true,
+  "message": "Berhasil ambil data",
+  "data": [
+    { "id": 1, "role_name": "admin" },
+    { "id": 2, "role_name": "manager" }
+  ]
+}
 ```
-### PUT
-`PUT /roles/{id}`
+
+## POST
 ```json
-{ "role_name": "manager" }
+{
+  "role_name": "employee"
+}
 ```
-### DELETE
-`DELETE /roles/{id}`
+## Response
+```json
+{
+  "success": true,
+  "message": "Role berhasil ditambahkan"
+}
+```
+
+## PUT (/api/roles/{id})
+```json
+{
+  "success": true,
+  "message": "Role berhasil diperbarui"
+}
+```
+
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Role berhasil dihapus"
+}
+```
 
 ---
 
-## 👤 Customer
-### GET
-`GET /customers`
-### POST
+# 👤 Customer (/api/customers)
+
+## GET
+```json
+[
+  {
+    "id": 1,
+    "fullname": "Rachel Green",
+    "quickname": "Rach"
+  }
+]
+```
+
+## POST
+### Request
 ```json
 {
   "username": "rachel123",
@@ -166,17 +364,45 @@ Semua endpoint diawali dengan `/api/`.
   "phone_number": "081234567890"
 }
 ```
-### PUT
-`PUT /customers/{id}`
-### DELETE
-`DELETE /customers/{id}`
+### Response
+```json
+{
+  "success": true,
+  "message": "Berhasil menambah data customer"
+}
+```
+
+## PUT (/api/customers/{id})
+```json
+{
+  "success": true,
+  "message": "Berhasil mengubah data customer"
+}
+```
+
+## DELETE (/api/customers/{id})
+```json
+{
+  "success": true,
+  "message": "Berhasil menghapus data customer"
+}
+```
 
 ---
 
-## 👨‍🍳 Employee
-### GET
-`GET /employees`
-### POST
+# 👨‍🍳 Employee (/api/employees)
+
+## GET
+```json
+[
+  {
+    "id": 2,
+    "fullname": "Budi Santoso"
+  }
+]
+```
+
+## POST
 ```json
 {
   "username": "budi23",
@@ -188,17 +414,39 @@ Semua endpoint diawali dengan `/api/`.
   "phone_number": "081234567890"
 }
 ```
-### PUT
-`PUT /employees/{id}`
-### DELETE
-`DELETE /employees/{id}`
+
+## PUT (/api/employees/{id})
+```json
+{
+  "success": true,
+  "message": "Employee updated successfully"
+}
+```
+
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Employee berhasil dihapus"
+}
+```
 
 ---
 
-## 👔 Manager
-### GET
-`GET /managers`
-### POST
+# 👔 Manager (/api/managers)
+## GET
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "fullname": "Angger Firlana Udah Update"
+    }
+  ]
+}
+```
+## POST
 ```json
 {
   "branch_id": 3,
@@ -211,17 +459,37 @@ Semua endpoint diawali dengan `/api/`.
   "password_confirmation": "newpass123"
 }
 ```
-### PUT
-`PUT /managers/{id}`
-### DELETE
-`DELETE /managers/{id}`
+## PUT (/api/managers/{id})
+```json
+{
+  "success": true,
+  "message": "Manager updated successfully"
+}
+```
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Manager deleted successfully"
+}
+```
 
 ---
 
-## 🚚 Courier
-### GET
-`GET /couriers`
-### POST
+# 🚚 Courier (/api/couriers)
+## GET
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "fullname": "New courier"
+    }
+  ]
+}
+```
+## POST
 ```json
 {
   "branch_id": 3,
@@ -234,25 +502,29 @@ Semua endpoint diawali dengan `/api/`.
   "password_confirmation": "newpass123"
 }
 ```
-### PUT
-`PUT /couriers/{id}`
-### DELETE
-`DELETE /couriers/{id}`
+## PUT (/api/couriers/{id})
+```json
+{
+  "success": true,
+  "message": "Courier updated successfully"
+}
+```
+## DELETE
+```json
+{
+  "success": true,
+  "message": "Courier deleted successfully"
+}
+```
 
 ---
 
-## 🧾 Ingredient History
-### GET
-`GET /ingredient-history`
-**Response**
+# 🧾 Ingredient History (/api/ingredient-history)
+## GET
 ```json
 {
   "success": true,
   "message": "Success received data",
-  "current_page": 1,
-  "per_page": 10,
-  "total": 2,
-  "last_page": 1,
   "data": [
     {
       "id": 2,
@@ -260,15 +532,12 @@ Semua endpoint diawali dengan `/api/`.
       "received_date": "2025-11-10T00:00:00.000000Z",
       "quantity": 50,
       "expired_date": "2025-12-10T00:00:00.000000Z",
-      "status": "new_stock",
-      "created_at": "2025-11-10T04:04:44.000000Z",
-      "updated_at": "2025-11-10T04:04:44.000000Z"
+      "status": "new_stock"
     }
   ]
 }
 ```
-### POST
-`POST /ingredient-history`
+## POST
 ```json
 {
   "branch_id": 3,
@@ -289,14 +558,11 @@ Semua endpoint diawali dengan `/api/`.
     "quantity": 50,
     "expired_date": "2025-12-10T00:00:00.000000Z",
     "status": "new_stock",
-    "updated_at": "2025-11-10T04:04:44.000000Z",
-    "created_at": "2025-11-10T04:04:44.000000Z",
     "id": 2
   }
 }
 ```
-### PUT
-`PUT /ingredient-history/{id}`
+## PUT
 ```json
 {
   "branch_id": 3,
@@ -310,22 +576,10 @@ Semua endpoint diawali dengan `/api/`.
 ```json
 {
   "success": true,
-  "message": "Ingredient history successfully updated",
-  "data": {
-    "id": 1,
-    "branch_id": 3,
-    "received_date": "2025-11-10T00:00:00.000000Z",
-    "quantity": 50,
-    "expired_date": "2025-12-10T00:00:00.000000Z",
-    "status": "old_stock",
-    "created_at": "2025-11-10T04:04:21.000000Z",
-    "updated_at": "2025-11-10T04:06:45.000000Z"
-  }
+  "message": "Ingredient history successfully updated"
 }
 ```
-### DELETE
-`DELETE /ingredient-history/{id}`
-**Response**
+## DELETE
 ```json
 {
   "success": true,
