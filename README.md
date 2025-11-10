@@ -7,7 +7,7 @@ API ini mencakup autentikasi, manajemen cabang, unit bahan, bahan baku, pengguna
 
 ## ⚙️ Base URL
 ```
-http://yourdomain.com/api
+http://127.0.0.1:8000/
 ```
 
 Semua endpoint diawali dengan `/api/`.
