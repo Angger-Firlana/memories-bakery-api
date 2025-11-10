@@ -13,6 +13,7 @@ use App\Http\Customer\Controllers\CustomerController;
 use App\Http\Employee\Controllers\EmployeeController;
 use App\Http\Manager\Controllers\ManagerController;
 use App\Http\Courier\Controllers\CourierController;
+use App\Http\IngredientHistory\Controllers\IngredientHistoryController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -64,6 +65,13 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     Route::put('units/{id}', [UnitController::class, 'update']);
     Route::patch('units/{id}', [UnitController::class, 'patch']);
     Route::delete('units/{id}', [UnitController::class, 'destroy']);
+
+    //Ingredient History Endpoiint
+    Route::get('ingredient-history', [IngredientHistoryController::class, 'index']);
+    Route::get('ingredient-history/{id}', [IngredientHistoryController::class, 'show']);
+    Route::post('ingredient-history', [IngredientHistoryController::class, 'store']);
+    Route::put('ingredient-history/{id}', [IngredientHistoryController::class, 'update']);
+    Route::delete('ingredient-history/{id}', [IngredientHistoryController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){
