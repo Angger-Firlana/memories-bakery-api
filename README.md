@@ -1,66 +1,334 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍞 Kenangan Bakery API Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+RESTful API untuk sistem manajemen **Kenangan Bakery**.  
+API ini mencakup autentikasi, manajemen cabang, unit bahan, bahan baku, pengguna (admin, manager, employee, courier, customer), serta **riwayat bahan baku (ingredient history)**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ⚙️ Base URL
+```
+http://yourdomain.com/api
+```
+Semua endpoint diawali dengan `/api/`.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🔑 Auth
+### Login
+**POST** `/auth/login`
+```json
+{
+  "login": "anggerja",
+  "password": "angger12"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Berhasil Login",
+  "user": {
+    "id": 6,
+    "username": "anggerja",
+    "email": "anggera@gmail.com",
+    "role_id": 1,
+    "role": {
+      "id": 1,
+      "role_name": "admin"
+    }
+  },
+  "token": "7|NNU82L2kilMAF5OYCzeIF8Q4ZNuQO7cOeovxOCZRd91a3f42"
+}
+```
 
-## Learning Laravel
+### Register
+**POST** `/auth/register`
+```json
+{
+  "username": "anggerjaa",
+  "email": "angger1222@gmail.com",
+  "password": "angger12"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Registrasi customer berhasil!",
+  "data": {
+    "user": {
+      "username": "anggerjaa",
+      "email": "angger1222@gmail.com",
+      "role_id": 3,
+      "id": 7
+    },
+    "token": "8|wOGyGgRBDF3ey4uZhP7sTW0t9KBezB45Tk3jh7Ynfb9e68d0"
+  }
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🏢 Branch
+### GET
+`GET /branch`
+### POST
+```json
+{
+  "name": "Kenangan Bakery Cipinang",
+  "address": "angger12",
+  "city": "Jakarta Timur",
+  "province": "Jakarta",
+  "open": 9,
+  "close": 21,
+  "phone_number": "098475424",
+  "email": "adsfkj@meries.com"
+}
+```
+### PUT
+`PUT /branch/{id}`
+### DELETE
+`DELETE /branch/{id}`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📏 Unit
+### GET
+`GET /units`
+### POST
+```json
+{ "unit_name": "kg" }
+```
+### PUT
+`PUT /units/{id}`
+```json
+{ "unit_name": "gram" }
+```
+### DELETE
+`DELETE /units/{id}`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🧂 Ingredient
+### GET
+`GET /ingredients`
+### POST
+```json
+{
+  "unit_id": 1,
+  "name": "Tepung",
+  "price": 50000
+}
+```
+### PUT
+`PUT /ingredients/{id}`
+```json
+{
+  "unit_id": 1,
+  "name": "Tepung Terigu",
+  "price": 50000
+}
+```
+### DELETE
+`DELETE /ingredients/{id}`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## 🧩 Roles
+### GET
+`GET /roles`
+### POST
+```json
+{ "role_name": "employee" }
+```
+### PUT
+`PUT /roles/{id}`
+```json
+{ "role_name": "manager" }
+```
+### DELETE
+`DELETE /roles/{id}`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 👤 Customer
+### GET
+`GET /customers`
+### POST
+```json
+{
+  "username": "rachel123",
+  "email": "rachel@example.com",
+  "password": "secret123",
+  "fullname": "Rachel Green",
+  "quickname": "Rach",
+  "address": "Jl. Melati No. 45, Bandung",
+  "phone_number": "081234567890"
+}
+```
+### PUT
+`PUT /customers/{id}`
+### DELETE
+`DELETE /customers/{id}`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 👨‍🍳 Employee
+### GET
+`GET /employees`
+### POST
+```json
+{
+  "username": "budi23",
+  "email": "budi@examle.com",
+  "password": "rahasia123",
+  "branch_id": 3,
+  "fullname": "Budi Santoso",
+  "address": "Jl. Mawar No. 45, Jakarta Selatan",
+  "phone_number": "081234567890"
+}
+```
+### PUT
+`PUT /employees/{id}`
+### DELETE
+`DELETE /employees/{id}`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 👔 Manager
+### GET
+`GET /managers`
+### POST
+```json
+{
+  "branch_id": 3,
+  "fullname": "Angger Firlana Updated",
+  "address": "Jl. Mawar No. 99, Bekasi",
+  "phone_number": "08987654321",
+  "username": "angger_updated",
+  "email": "angger_updated@example.com",
+  "password": "newpass123",
+  "password_confirmation": "newpass123"
+}
+```
+### PUT
+`PUT /managers/{id}`
+### DELETE
+`DELETE /managers/{id}`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🚚 Courier
+### GET
+`GET /couriers`
+### POST
+```json
+{
+  "branch_id": 3,
+  "fullname": "New courier",
+  "address": "Jl. Mawar No. 99, Bekasi",
+  "phone_number": "08987654321",
+  "username": "courier",
+  "email": "courieradded@example.com",
+  "password": "newpass123",
+  "password_confirmation": "newpass123"
+}
+```
+### PUT
+`PUT /couriers/{id}`
+### DELETE
+`DELETE /couriers/{id}`
+
+---
+
+## 🧾 Ingredient History
+### GET
+`GET /ingredient-history`
+**Response**
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "current_page": 1,
+  "per_page": 10,
+  "total": 2,
+  "last_page": 1,
+  "data": [
+    {
+      "id": 2,
+      "branch_id": 3,
+      "received_date": "2025-11-10T00:00:00.000000Z",
+      "quantity": 50,
+      "expired_date": "2025-12-10T00:00:00.000000Z",
+      "status": "new_stock",
+      "created_at": "2025-11-10T04:04:44.000000Z",
+      "updated_at": "2025-11-10T04:04:44.000000Z"
+    }
+  ]
+}
+```
+### POST
+`POST /ingredient-history`
+```json
+{
+  "branch_id": 3,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "new_stock"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully added",
+  "data": {
+    "branch_id": 3,
+    "received_date": "2025-11-10T00:00:00.000000Z",
+    "quantity": 50,
+    "expired_date": "2025-12-10T00:00:00.000000Z",
+    "status": "new_stock",
+    "updated_at": "2025-11-10T04:04:44.000000Z",
+    "created_at": "2025-11-10T04:04:44.000000Z",
+    "id": 2
+  }
+}
+```
+### PUT
+`PUT /ingredient-history/{id}`
+```json
+{
+  "branch_id": 3,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "old_stock"
+}
+```
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully updated",
+  "data": {
+    "id": 1,
+    "branch_id": 3,
+    "received_date": "2025-11-10T00:00:00.000000Z",
+    "quantity": 50,
+    "expired_date": "2025-12-10T00:00:00.000000Z",
+    "status": "old_stock",
+    "created_at": "2025-11-10T04:04:21.000000Z",
+    "updated_at": "2025-11-10T04:06:45.000000Z"
+  }
+}
+```
+### DELETE
+`DELETE /ingredient-history/{id}`
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully deleted"
+}
+```
