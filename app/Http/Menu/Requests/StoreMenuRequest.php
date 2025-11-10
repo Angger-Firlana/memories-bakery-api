@@ -29,6 +29,11 @@ class StoreMenuRequest extends FormRequest
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'validDuration' => 'required|integer|min:1',
+            'details' => 'required|array',
+            
+            // validasi tiap item di dalam array details
+            'details.*.ingredient_id' => 'required|exists:ingredients,id',
+            'details.*.quantity' => 'required|numeric|min:1',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Menu;
 use App\Http\Menu\Requests\StoreMenuRequest;
 use App\Http\Controllers\Controller;
@@ -44,9 +45,27 @@ class MenuController extends Controller
     }
 
     public function store(StoreMenuRequest $request){
+        DB::beginTransaction();
         try {
 
-            $menu = Menu::create($request->validated());
+            $menu = Menu::create([
+                'type_id' => $request->type_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'validDuration' => $request->validDuration,
+                'branch_id' => $request->branch_id,
+            ]);
+
+            // Simpan detail menu
+            foreach($request->details as $detail){
+                $menu->details()->create([
+                    'ingredient_id' => $detail['ingredient_id'],
+                    'quantity' => $detail['quantity'],
+                ]);
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -54,6 +73,7 @@ class MenuController extends Controller
                 'data' => $menu
             ], 201);
         } catch (\Exception $ex) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => "Failed to add menu: {$ex->getMessage()}"
@@ -62,10 +82,27 @@ class MenuController extends Controller
     }
 
     public function update(UpdateMenuRequest $request, $id){
+        DB::beginTransaction();
         try {
             $menu = Menu::findOrFail($id);
 
-            $menu->update($request->validated());
+            $menu->update([
+                'type_id' => $request->type_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'validDuration' => $request->validDuration,
+                'branch_id' => $request->branch_id,
+            ]);
+
+            foreach($request->details as $detail){
+                $menu->details()->updateOrCreate(
+                    ['ingredient_id' => $detail['ingredient_id']],
+                    ['quantity' => $detail['quantity']]
+                );
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -73,6 +110,7 @@ class MenuController extends Controller
                 'data' => $menu
             ]);
         } catch (\Exception $ex) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => "Failed to update menu: {$ex->getMessage()}"
