@@ -586,3 +586,219 @@ Semua endpoint diawali dengan `/api/`.
   "message": "Ingredient history successfully deleted"
 }
 ```
+# 🧾 Ingredient History (/api/ingredient-history)
+
+## GET (All with Pagination)
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "current_page": 1,
+  "per_page": 10,
+  "total": 2,
+  "last_page": 1,
+  "data": [
+    {
+      "id": 3,
+      "branch_id": 3,
+      "ingredient_id": 2,
+      "received_date": "2025-11-10T00:00:00.000000Z",
+      "quantity": 50,
+      "expired_date": "2025-12-10T00:00:00.000000Z",
+      "status": "new_stock",
+      "created_at": "2025-11-10T04:50:03.000000Z",
+      "updated_at": "2025-11-10T04:50:03.000000Z"
+    },
+    {
+      "id": 1,
+      "branch_id": 3,
+      "ingredient_id": 2,
+      "received_date": "2025-11-10T11:43:29.000000Z",
+      "quantity": 50,
+      "expired_date": "2025-11-10T11:43:29.000000Z",
+      "status": "old_stock",
+      "created_at": "2025-11-10T04:04:21.000000Z",
+      "updated_at": "2025-11-10T04:06:45.000000Z"
+    }
+  ]
+}
+```
+
+## GET Stock by Branch & Ingredient (/api/ingredient-stock/{branch_id}/{ingredient_id})
+
+**Example:** `/api/ingredient-stock/3/2`
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Success received stock data",
+  "data": {
+    "branch_id": "3",
+    "ingredient_id": "2",
+    "total_stock": "100"
+  }
+}
+```
+
+## POST
+```json
+{
+  "branch_id": 3,
+  "ingredient_id": 2,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "new_stock"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully added",
+  "data": {
+    "branch_id": 3,
+    "ingredient_id": 2,
+    "received_date": "2025-11-10T00:00:00.000000Z",
+    "quantity": 50,
+    "expired_date": "2025-12-10T00:00:00.000000Z",
+    "status": "new_stock",
+    "updated_at": "2025-11-10T04:51:05.000000Z",
+    "created_at": "2025-11-10T04:51:05.000000Z",
+    "id": 4
+  }
+}
+```
+
+## PUT (/api/ingredient-history/{id})
+```json
+{
+  "branch_id": 3,
+  "received_date": "2025-11-10",
+  "quantity": 50,
+  "expired_date": "2025-12-10",
+  "status": "old_stock"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully updated",
+  "data": {
+    "id": 1,
+    "branch_id": 3,
+    "ingredient_id": 2,
+    "received_date": "2025-11-10T00:00:00.000000Z",
+    "quantity": 50,
+    "expired_date": "2025-12-10T00:00:00.000000Z",
+    "status": "old_stock",
+    "created_at": "2025-11-10T04:04:21.000000Z",
+    "updated_at": "2025-11-10T04:06:45.000000Z"
+  }
+}
+```
+
+## DELETE (/api/ingredient-history/{id})
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Ingredient history successfully deleted"
+}
+```
+# 🏷️ Types (/api/types)
+
+## GET (All)
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 2,
+      "type_name": "bread",
+      "created_at": "2025-11-10T06:21:10.000000Z",
+      "updated_at": "2025-11-10T06:21:10.000000Z"
+    },
+    {
+      "id": 1,
+      "type_name": "cute",
+      "created_at": "2025-11-10T06:20:31.000000Z",
+      "updated_at": "2025-11-10T06:27:05.000000Z"
+    }
+  ]
+}
+```
+
+## GET by ID (/api/types/{id})
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": {
+    "id": 1,
+    "type_name": "cute",
+    "created_at": "2025-11-10T06:20:31.000000Z",
+    "updated_at": "2025-11-10T06:27:05.000000Z"
+  }
+}
+```
+
+## POST
+```json
+{
+  "type_name": "bread"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully added",
+  "data": {
+    "type_name": "breads",
+    "updated_at": "2025-11-10T06:28:46.000000Z",
+    "created_at": "2025-11-10T06:28:46.000000Z",
+    "id": 4
+  }
+}
+```
+
+## PUT (/api/types/{id})
+```json
+{
+  "type_name": "cute"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully updated",
+  "data": {
+    "id": 1,
+    "type_name": "cute",
+    "created_at": "2025-11-10T06:20:31.000000Z",
+    "updated_at": "2025-11-10T06:27:05.000000Z"
+  }
+}
+```
+
+## DELETE (/api/types/{id})
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully deleted"
+}
+```
