@@ -62,6 +62,7 @@ class IngredientHistoryController extends Controller
         try {
             $validated = $request->validate([
                 'branch_id' => 'required|exists:branchs,id',
+                'ingredient_id' => 'required|exists:ingredients,id',
                 'received_date' => 'required|date',
                 'quantity' => 'required|integer|min:1',
                 'expired_date' => 'required|date|after:received_date',
@@ -89,6 +90,7 @@ class IngredientHistoryController extends Controller
 
             $validated = $request->validate([
                 'branch_id' => 'required|exists:branchs,id',
+                'ingredient_id' => 'required|exists:ingredients,id',
                 'received_date' => 'required|date',
                 'quantity' => 'required|integer|min:1',
                 'expired_date' => 'required|date|after:received_date',
@@ -111,6 +113,30 @@ class IngredientHistoryController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "Failed to update ingredient history: {$ex->getMessage()}"
+            ], 500);
+        }
+    }
+
+    public function getStockByBranchAndIngredient($branchId, $ingredientId){
+        try {
+            $totalStock = IngredientsHistory::where('branch_id', $branchId)
+                ->where('ingredient_id', $ingredientId)
+                ->where('status', 'new_stock')
+                ->sum('quantity');
+
+            return response()->json([
+                'success' => true,
+                'message' => "Success received stock data",
+                'data' => [
+                    'branch_id' => $branchId,
+                    'ingredient_id' => $ingredientId,
+                    'total_stock' => $totalStock
+                ]
+            ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to retrieve stock data: {$ex->getMessage()}"
             ], 500);
         }
     }

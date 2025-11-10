@@ -14,6 +14,7 @@ use App\Http\Employee\Controllers\EmployeeController;
 use App\Http\Manager\Controllers\ManagerController;
 use App\Http\Courier\Controllers\CourierController;
 use App\Http\IngredientHistory\Controllers\IngredientHistoryController;
+use App\Http\Type\Controllers\TypeController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -69,9 +70,16 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     //Ingredient History Endpoiint
     Route::get('ingredient-history', [IngredientHistoryController::class, 'index']);
     Route::get('ingredient-history/{id}', [IngredientHistoryController::class, 'show']);
+    Route::get('ingredient-stock/{branchId}/{ingredientId}', [IngredientHistoryController::class, 'getStockByBranchAndIngredient']);
     Route::post('ingredient-history', [IngredientHistoryController::class, 'store']);
     Route::put('ingredient-history/{id}', [IngredientHistoryController::class, 'update']);
     Route::delete('ingredient-history/{id}', [IngredientHistoryController::class, 'destroy']);
+
+    Route::get('types', [TypeController::class, 'index']);
+    Route::get('types/{id}', [TypeController::class, 'show']);
+    Route::post('types', [TypeController::class, 'store']);
+    Route::put('types/{id}', [TypeController::class, 'update']);
+    Route::delete('types/{id}', [TypeController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){

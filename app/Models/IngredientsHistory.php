@@ -39,6 +39,7 @@ class IngredientsHistory extends Model
 	protected $fillable = [
 		'branch_id',
 		'received_date',
+		'ingredient_id',
 		'quantity',
 		'expired_date',
 		'status'

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('branch_id')->constrained('branchs')
             ->onDelete('cascade')
             ->onUpdate('cascade');
+            $table->foreignId('ingredient_id')->constrained('ingredients')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
             $table->timestamp('received_date');
             $table->integer('quantity');
             $table->timestamp('expired_date');
