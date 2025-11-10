@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Menu;
+use App\Http\Menu\Requests\StoreMenuRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Menu\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
 {
@@ -39,13 +43,10 @@ class MenuController extends Controller
         }
     }
 
-    public function store(Request $request){
+    public function store(StoreMenuRequest $request){
         try {
-            $validated = $request->validate([
-                
-            ]);
 
-            $menu = Menu::create($validated);
+            $menu = Menu::create($request->validated());
 
             return response()->json([
                 'success' => true,
@@ -59,4 +60,42 @@ class MenuController extends Controller
             ], 500);
         }
     }
+
+    public function update(UpdateMenuRequest $request, $id){
+        try {
+            $menu = Menu::findOrFail($id);
+
+            $menu->update($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Menu successfully updated',
+                'data' => $menu
+            ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to update menu: {$ex->getMessage()}"
+            ], 500);
+        }
+    }   
+
+    public function destroy($id){
+        try {
+            $menu = Menu::findOrFail($id);
+            $menu->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Menu successfully deleted'
+            ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to delete menu: {$ex->getMessage()}"
+            ], 500);
+        }
+    }
+
+
 }
