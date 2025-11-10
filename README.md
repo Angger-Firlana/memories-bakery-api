@@ -586,3 +586,78 @@ Semua endpoint diawali dengan `/api/`.
   "message": "Ingredient history successfully deleted"
 }
 ```
+# 🏷️ Types (/api/types)
+
+## GET
+```json
+{
+  "success": true,
+  "message": "Success received data",
+  "data": [
+    {
+      "id": 2,
+      "type_name": "bread",
+      "created_at": "2025-11-10T06:21:10.000000Z",
+      "updated_at": "2025-11-10T06:21:10.000000Z"
+    },
+    {
+      "id": 1,
+      "type_name": "cute",
+      "created_at": "2025-11-10T06:20:31.000000Z",
+      "updated_at": "2025-11-10T06:27:05.000000Z"
+    }
+  ]
+}
+```
+
+## POST
+```json
+{
+  "type_name": "bread"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully added",
+  "data": {
+    "type_name": "breads",
+    "updated_at": "2025-11-10T06:28:46.000000Z",
+    "created_at": "2025-11-10T06:28:46.000000Z",
+    "id": 4
+  }
+}
+```
+
+## PUT (/api/types/{id})
+```json
+{
+  "type_name": "cute"
+}
+```
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully updated",
+  "data": {
+    "id": 1,
+    "type_name": "cute",
+    "created_at": "2025-11-10T06:20:31.000000Z",
+    "updated_at": "2025-11-10T06:27:05.000000Z"
+  }
+}
+```
+
+## DELETE (/api/types/{id})
+
+**Response**
+```json
+{
+  "success": true,
+  "message": "Type successfully deleted"
+}
+```
