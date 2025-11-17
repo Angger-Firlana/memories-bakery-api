@@ -38,7 +38,6 @@ class ProductionScheduleDetail extends Model
 
 	protected $fillable = [
 		'production_schedule_id',
-		'schedule_date',
 		'menu_id',
 		'quantity'
 	];

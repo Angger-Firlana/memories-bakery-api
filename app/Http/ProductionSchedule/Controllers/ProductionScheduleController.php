@@ -3,41 +3,61 @@
 namespace App\Http\ProductionSchedule\Controllers;
 
 use App\Models\ProductionSchedule;
-use App\Http\ProductionSchdule\Requests\PostProductionScheduleRequest;
+use App\Http\ProductionSchedule\Requests\PostProductionScheduleRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\ProductionSchedule\Requests\PutProductionScheduleRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProductionScheduleController extends Controller
 {
-    //
-    public function index(Request $request){
-        //
+    public function index(Request $request)
+    {
+        $schedules = ProductionSchedule::with('production_schedule_details');
 
-        $schedules = ProductionSchedule::query();
-
-        if($request->has('date_from') && $request->has('date_to')){
-            $schedules->whereBetween('scheduled_date', [$request->date_from, $request->date_to]);
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $schedules->whereBetween('scheduled_date', [
+                $request->date_from,
+                $request->date_to
+            ]);
         }
 
-        if($request->has('status')){
+        if ($request->filled('status')) {
             $schedules->where('status', $request->status);
         }
 
-        if($request->has('branch_id')){
+        if ($request->filled('branch_id')) {
             $schedules->where('branch_id', $request->branch_id);
         }
+
         $schedules = $schedules->paginate(
-            $perpage = $request->input('pagination', 10), 
-            ['*'], 
-            'page', $page = $request->input('page', 1)
+            $request->input('pagination', 10),
+            ['*'],
+            'page',
+            $request->input('page', 1)
         );
-        $schedules = $schedules->orderBy('scheduled_date', 'desc')->get();
-        return response ->json([
+
+        return response()->json([
             'success' => true,
             'message' => "Success received data",
-            'data' => $schedules
+            'meta' => [
+                'current_page' => $schedules->currentPage(),
+                'per_page' => $schedules->perPage(),
+                'total' => $schedules->total(),
+                'last_page' => $schedules->lastPage(),
+                'from' => $schedules->firstItem(),
+                'to' => $schedules->lastItem(),
+            ],
+            'filters' => [
+                'date_from' => $request->date_from ?? null,
+                'date_to' => $request->date_to ?? null,
+                'status' => $request->status ?? null,
+                'branch_id' => $request->branch_id ?? null,
+            ],
+            'data' => $schedules->items(),
         ]);
     }
+
 
     public function show($id){
         try {
@@ -61,13 +81,15 @@ class ProductionScheduleController extends Controller
         try {
             $schedule = ProductionSchedule::create([
                 'branch_id' => $request->branch_id,
-                'scheduled_date' => $request->scheduled_date,
+                'schedule_date' => $request->schedule_date,
                 'status' => $request->status,
+                'manager_id' => $request->manager_id,
             ]);
 
             // Simpan detail jadwal produksi
             foreach ($request->details as $detail) {
-                $schedule->details()->create([
+                $schedule->production_schedule_details()->create([
+                    'production_schedule_id' => $schedule->id,
                     'menu_id' => $detail['menu_id'],
                     'quantity' => $detail['quantity'],
                 ]);
@@ -97,8 +119,8 @@ class ProductionScheduleController extends Controller
             if ($request->has('branch_id')) {
                 $schedule->branch_id = $request->branch_id;
             }
-            if ($request->has('scheduled_date')) {
-                $schedule->scheduled_date = $request->scheduled_date;
+            if ($request->has('schedule_date')) {
+                $schedule->schedule_date = $request->schedule_date;
             }
             if ($request->has('status')) {
                 $schedule->status = $request->status;
@@ -110,7 +132,7 @@ class ProductionScheduleController extends Controller
                 foreach ($request->details as $detail) {
                     if (isset($detail['id'])) {
                         // Update existing detail
-                        $scheduleDetail = $schedule->details()->find($detail['id']);
+                        $scheduleDetail = $schedule->production_schedule_details()->find($detail['id']);
                         if ($scheduleDetail) {
                             $scheduleDetail->menu_id = $detail['menu_id'];
                             $scheduleDetail->quantity = $detail['quantity'];
@@ -118,7 +140,8 @@ class ProductionScheduleController extends Controller
                         }
                     } else {
                         // Create new detail
-                        $schedule->details()->create([
+                        $schedule->production_schedule_details()->create([
+                            'production_schedule_id' => $schedule->id,
                             'menu_id' => $detail['menu_id'],
                             'quantity' => $detail['quantity'],
                         ]);

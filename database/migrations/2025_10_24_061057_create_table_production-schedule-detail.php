@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('production_schedule_id')->constrained('production_schedules')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-            $table->timestamp('schedule_date');
             $table->foreignId('menu_id')->constrained('menus')
             ->onDelete('cascade')
             ->onUpdate('cascade');

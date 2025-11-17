@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\ProductionSchedule\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class PostProductionScheduleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,8 @@ class PostProductionScheduleRequest extends FormRequest
     {
         return [
             //
-            'branch_id' => 'required|integer|exists:branches,id',
-            'scheduled_date' => 'required|date',
+            'branch_id' => 'required|integer|exists:branchs,id',
+            'schedule_date' => 'required|date',
             'status' => 'required|string|in:pending,completed,cancelled',
             'details' => 'required|array',
             'details.*.menu_id' => 'required|integer|exists:menus,id',

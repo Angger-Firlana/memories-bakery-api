@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('manager_id')->constrained('managers')
             ->onDelete('cascade')
             ->onUpdate('cascade');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Menu\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +59,8 @@ class MenuController extends Controller
 
             // Simpan detail menu
             foreach($request->details as $detail){
-                $menu->details()->create([
+                $menu->menu_details()->create([
+                    'menu_id' => $menu->id,
                     'ingredient_id' => $detail['ingredient_id'],
                     'quantity' => $detail['quantity'],
                 ]);
@@ -94,14 +95,19 @@ class MenuController extends Controller
                 'validDuration' => $request->validDuration,
                 'branch_id' => $request->branch_id,
             ]);
-
-            foreach($request->details as $detail){
-                $menu->details()->updateOrCreate(
-                    ['ingredient_id' => $detail['ingredient_id']],
-                    ['quantity' => $detail['quantity']]
-                );
+            
+            if($request->has('details')){
+                // Hapus detail menu lama
+                $menu->menu_details()->delete();
+                // Simpan detail menu baru
+                foreach($request->details as $detail){
+                    $menu->menu_details()->create([
+                        'menu_id' => $menu->id,
+                        'ingredient_id' => $detail['ingredient_id'],
+                        'quantity' => $detail['quantity']
+                    ]);
+                }
             }
-
             DB::commit();
 
             return response()->json([

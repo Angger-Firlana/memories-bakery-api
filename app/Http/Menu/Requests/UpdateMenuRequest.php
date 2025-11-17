@@ -29,6 +29,11 @@ class UpdateMenuRequest extends FormRequest
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'validDuration' => 'required|integer|min:1',
+            'details' => 'sometimes|array',
+            
+            // validasi tiap item di dalam array details
+            'details.*.ingredient_id' => 'sometimes|exists:ingredients,id',
+            'details.*.quantity' => 'sometimes|numeric|min:1',
         ];
     }
 }

@@ -15,6 +15,8 @@ use App\Http\Manager\Controllers\ManagerController;
 use App\Http\Courier\Controllers\CourierController;
 use App\Http\IngredientHistory\Controllers\IngredientHistoryController;
 use App\Http\Type\Controllers\TypeController;
+use App\Http\Menu\Controllers\MenuController;
+use App\Http\ProductionSchedule\Controllers\ProductionScheduleController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -86,6 +88,14 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     Route::post('menus', [MenuController::class, 'store']);
     Route::put('menus/{id}', [MenuController::class, 'update']);
     Route::delete('menus/{id}', [MenuController::class, 'destroy']);
+
+    Route::prefix('production-schedules')->group(function () {
+        Route::get('/', [ProductionScheduleController::class, 'index']);
+        Route::get('/{id}', [ProductionScheduleController::class, 'show']);
+        Route::post('/', [ProductionScheduleController::class, 'store']);
+        Route::put('/{id}', [ProductionScheduleController::class, 'update']);
+        Route::delete('/{id}', [ProductionScheduleController::class, 'destroy']);
+    });
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){

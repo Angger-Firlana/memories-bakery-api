@@ -47,6 +47,7 @@ class Menu extends Model
 		'type_id',
 		'branch_id',
 		'name',
+		'description',
 		'price',
 		'validDuration'
 	];
