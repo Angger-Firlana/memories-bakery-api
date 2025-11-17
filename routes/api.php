@@ -96,6 +96,14 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
         Route::put('/{id}', [ProductionScheduleController::class, 'update']);
         Route::delete('/{id}', [ProductionScheduleController::class, 'destroy']);
     });
+
+    Route::prefix('productions')->group(function () {
+        Route::get('/', [ProductionController::class, 'index']);
+        Route::get('/{id}', [ProductionController::class, 'show']);
+        Route::post('/', [ProductionController::class, 'store']);
+        Route::put('/{id}', [ProductionController::class, 'update']);
+        Route::delete('/{id}', [ProductionController::class, 'destroy']);
+    });
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){

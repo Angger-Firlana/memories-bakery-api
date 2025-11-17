@@ -11,7 +11,7 @@ class PostProductionRequests extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,10 @@ class PostProductionRequests extends FormRequest
     {
         return [
             //
+            'branch_id' => 'required|integer|exists:branchs,id',        
+            'menu_id' => 'required|integer|exists:menus,id',
+            'quantity' => 'required|integer|min:1',
+            'dateProduction' => 'required|date'
         ];
     }
 }

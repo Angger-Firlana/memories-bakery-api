@@ -23,6 +23,10 @@ class PutProductionRequests extends FormRequest
     {
         return [
             //
+            'branch_id' => 'required|integer|exists:branchs,id',        
+            'menu_id' => 'sometimes|integer|exists:menus,id',
+            'quantity' => 'sometimes|integer|min:1',
+            'dateProduction' => 'sometimes|date'
         ];
     }
 }
