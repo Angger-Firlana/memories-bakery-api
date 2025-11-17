@@ -23,6 +23,13 @@ class PutProductionScheduleRequest extends FormRequest
     {
         return [
             //
+            'branch_id' => 'sometimes|integer|exists:branches,id',
+            'scheduled_date' => 'sometimes|date',
+            'status' => 'sometimes|string|in:pending,completed,cancelled',
+            'details' => 'sometimes|array',
+            'details.*.id' => 'sometimes|integer|exists:production_schedule_details,id',
+            'details.*.menu_id' => 'required_with:details|integer|exists:menus,id',
+            'details.*.quantity' => 'required_with:details|integer|min:1',
         ];
     }
 }
