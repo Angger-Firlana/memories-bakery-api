@@ -2,6 +2,8 @@
 
 namespace App\Http\ProductionSchedule\Controllers;
 
+use App\Models\ProductionSchedule;
+use App\Http\ProductionSchdule\Requests\PostProductionScheduleRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -53,4 +55,38 @@ class ProductionScheduleController extends Controller
         }
     }
 
+    public function store(PostProductionScheduleRequest $request){
+        //
+        DB::beginTransaction();
+        try {
+            $schedule = ProductionSchedule::create([
+                'branch_id' => $request->branch_id,
+                'scheduled_date' => $request->scheduled_date,
+                'status' => $request->status,
+            ]);
+
+            // Simpan detail jadwal produksi
+            foreach ($request->details as $detail) {
+                $schedule->details()->create([
+                    'menu_id' => $detail['menu_id'],
+                    'quantity' => $detail['quantity'],
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => "Production Schedule created successfully",
+                'data' => $schedule
+            ], 201);
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => "Failed to create Production Schedule: {$ex->getMessage()}"
+            ], 500);
+        }
+    }
+
+    
 }

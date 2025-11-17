@@ -23,6 +23,12 @@ class PostProductionScheduleRequest extends FormRequest
     {
         return [
             //
+            'branch_id' => 'required|integer|exists:branches,id',
+            'scheduled_date' => 'required|date',
+            'status' => 'required|string|in:pending,completed,cancelled',
+            'details' => 'required|array',
+            'details.*.menu_id' => 'required|integer|exists:menus,id',
+            'details.*.quantity' => 'required|integer|min:1',
         ];
     }
 }
