@@ -134,6 +134,4 @@ class MenuController extends Controller
             ], 500);
         }
     }
-
-
 }
