@@ -17,6 +17,7 @@ use App\Http\IngredientHistory\Controllers\IngredientHistoryController;
 use App\Http\Type\Controllers\TypeController;
 use App\Http\Menu\Controllers\MenuController;
 use App\Http\ProductionSchedule\Controllers\ProductionScheduleController;
+use App\Http\Order\Controllers\OrderController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -103,6 +104,13 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
         Route::post('/', [ProductionController::class, 'store']);
         Route::put('/{id}', [ProductionController::class, 'update']);
         Route::delete('/{id}', [ProductionController::class, 'destroy']);
+    });
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/{id}', [OrderController::class, 'show']);
+        Route::post('/', [OrderController::class, 'store']);
+        Route::put('/{id}', [OrderController::class, 'update']);
+        Route::delete('/{id}', [OrderController::class, 'destroy']);
     });
 });
 

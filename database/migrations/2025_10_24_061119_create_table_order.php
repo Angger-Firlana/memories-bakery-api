@@ -16,18 +16,16 @@ return new class extends Migration
              $table->foreignId('branch_id')->constrained('branchs')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-             $table->foreignId('menu_id')->constrained('menus')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
              $table->foreignId('customer_id')->constrained('customers')
             ->onDelete('cascade')
             ->onUpdate('cascade');
              $table->foreignId('employee_id')->constrained('employees')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-            $table->timestamp('orderDate');
+            $table->string('customer_name');
+            $table->timestamp('order_date');
             $table->string('address');
-            $table->string('phoneNumber');
+            $table->string('customer_phone');
             $table->enum('status', ['pending', 'confirmation', 'finished', 'rejected'])->default('pending');
             $table->timestamps();
         });
