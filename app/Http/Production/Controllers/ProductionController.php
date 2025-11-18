@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Production;
 use App\Http\Production\Requests\PostProductionRequests;
+use App\Http\Production\Requests\PutProductionRequests;
 
 class ProductionController extends Controller
 {
@@ -70,7 +71,7 @@ class ProductionController extends Controller
         }
     }
 
-    public function update($id, Request $request){
+    public function update($id, PutProductionRequests $request){
         $production = Production::find($id);
 
         try{

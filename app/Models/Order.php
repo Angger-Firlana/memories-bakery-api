@@ -18,9 +18,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $menu_id
  * @property int $customer_id
  * @property int $employee_id
- * @property Carbon $orderDate
+ * @property Carbon $order_date
  * @property string $address
- * @property string $phoneNumber
+ * @property string $customer_name
+ * @property string $customer_phone
  * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -40,20 +41,20 @@ class Order extends Model
 
 	protected $casts = [
 		'branch_id' => 'int',
-		'menu_id' => 'int',
 		'customer_id' => 'int',
 		'employee_id' => 'int',
-		'orderDate' => 'datetime'
+		'order_date' => 'datetime',
+		'customer_name' => 'string',
 	];
 
 	protected $fillable = [
 		'branch_id',
-		'menu_id',
 		'customer_id',
 		'employee_id',
-		'orderDate',
+		'customer_name',
+		'order_date',
 		'address',
-		'phoneNumber',
+		'customer_phone',
 		'status'
 	];
 
