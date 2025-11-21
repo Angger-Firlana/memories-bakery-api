@@ -19,27 +19,17 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         //
-        $orders = Order::query();
-        $orders = $orders->paginate(
-            $request->input('pagination', 10),
-            ['*'],
-            'page',
-            $request->input('page', 1)
-        );
+        $orders = Order::withSum('order_details as total', 'sub_total')->with([
+                    'branch' => function ($query) {
+                        $query->select('id', 'name');
+                    }
+                ])->get();
 
         return response()->json([
             'success' => true,
             'message' => "Success received data",
-            'meta' => [
-                'current_page' => $orders->currentPage(),
-                'per_page' => $orders->perPage(),
-                'total' => $orders->total(),
-                'last_page' => $orders->lastPage(),
-                'from' => $orders->firstItem(),
-                'to' => $orders->lastItem(),
-            ],
-            'data' => $orders->items(),
-        ]);
+            'data' => $orders,
+        ]); 
     }
 
     /**
@@ -86,13 +76,40 @@ class OrderController extends Controller
         }
     }
 
+    public function updateStatus($id, Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $order = Order::findOrFail($id);
+            $order->status = $request->status;
+            $order->save();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order status updated successfully',
+                'data' => $order
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update order status',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
-        $order = Order::find($id);
+        $order = Order::with('order_details.menu')->withSum('order_details as total', 'sub_total')->find($id);
         if(!$order){
             return response()->json([
                 'success' => false,

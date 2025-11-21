@@ -18,9 +18,6 @@ return new class extends Migration
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->timestamp('schedule_date');
-            $table->foreignId('manager_id')->constrained('managers')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

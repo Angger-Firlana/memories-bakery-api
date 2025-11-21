@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $unit_id
  * @property string $name
  * @property float $price
+ * @property int $stock
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -31,13 +32,15 @@ class Ingredient extends Model
 
 	protected $casts = [
 		'unit_id' => 'int',
-		'price' => 'float'
+		'price' => 'float',
+		'stock' => 'int'
 	];
 
 	protected $fillable = [
 		'unit_id',
 		'name',
-		'price'
+		'price',
+		'stock'
 	];
 
 	public function unit()

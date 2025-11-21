@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property float $price
  * @property int $validDuration
+ * @property int $stock
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -40,7 +41,8 @@ class Menu extends Model
 		'type_id' => 'int',
 		'branch_id' => 'int',
 		'price' => 'float',
-		'validDuration' => 'int'
+		'validDuration' => 'int',
+		'stock' => 'int'
 	];
 
 	protected $fillable = [
@@ -49,7 +51,8 @@ class Menu extends Model
 		'name',
 		'description',
 		'price',
-		'validDuration'
+		'validDuration',
+		'stock'
 	];
 
 	public function branch()

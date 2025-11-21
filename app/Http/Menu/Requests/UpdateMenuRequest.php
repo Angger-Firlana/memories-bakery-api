@@ -30,6 +30,7 @@ class UpdateMenuRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'validDuration' => 'required|integer|min:1',
             'details' => 'sometimes|array',
+            'stock' => 'sometimes|integer|min:0',
             
             // validasi tiap item di dalam array details
             'details.*.ingredient_id' => 'sometimes|exists:ingredients,id',

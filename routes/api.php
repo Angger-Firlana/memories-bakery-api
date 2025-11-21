@@ -27,7 +27,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/role', [RoleController::class, 'index']);
 
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
+Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource('managers', ManagerController::class);
     Route::apiResource('couriers', CourierController::class);
 
@@ -45,13 +45,13 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
     Route::delete('employees/{id}', [EmployeeController::class, 'destroy']);
     
     //Branch Endpoint
-    Route::post('branch', [BranchController::class, 'store']);
-    Route::put('branch/{id}', [BranchController::class, 'update']);
-    Route::delete('branch/{id}', [BranchController::class, 'destroy']);
+    Route::post('branchs', [BranchController::class, 'store']);
+    Route::put('branchs/{id}', [BranchController::class, 'update']);
+    Route::delete('branchs/{id}', [BranchController::class, 'destroy']);
 
     //Ingredient Endpoint
-    Route::get('ingredient', [IngredientsController::class, 'index']);
-    Route::post('ingredient', [IngredientsController::class, 'store']);
+    Route::get('ingredients', [IngredientsController::class, 'index']);
+    Route::post('ingredients', [IngredientsController::class, 'store']);
     Route::put('ingredients/{id}', [IngredientsController::class, 'update']);
     Route::patch('ingredients/{id}', [IngredientsController::class, 'patch']);
     Route::delete('ingredients/{id}', [IngredientsController::class, 'destroy']);
@@ -115,7 +115,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function (){
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::get('branch', [BranchController::class, 'index']);
-    Route::get('branch/{id}', [BranchController::class, 'getById']);
+    Route::get('branchs', [BranchController::class, 'index']);
+    Route::get('branchs/{id}', [BranchController::class, 'getById']);
 });
 

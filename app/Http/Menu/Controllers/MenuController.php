@@ -16,7 +16,7 @@ class MenuController extends Controller
         $pagination = $request->input('pagination', 10);
         $page = $request->input('page', 1);
         
-        $menus = Menu::orderBy('created_at', 'desc')->paginate($pagination, ['*'], 'page', $page);
+        $menus = Menu::orderBy('created_at', 'desc')->with('branch')->paginate($pagination, ['*'], 'page', $page);
         return response()->json([
             'success' => true,
             'message' => "Success received data",
@@ -55,6 +55,7 @@ class MenuController extends Controller
                 'price' => $request->price,
                 'validDuration' => $request->validDuration,
                 'branch_id' => $request->branch_id,
+                'stock' => $request->stock,
             ]);
 
             // Simpan detail menu
@@ -94,6 +95,7 @@ class MenuController extends Controller
                 'price' => $request->price,
                 'validDuration' => $request->validDuration,
                 'branch_id' => $request->branch_id,
+                'stock' => $request->stock,
             ]);
             
             if($request->has('details')){

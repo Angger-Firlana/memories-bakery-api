@@ -25,7 +25,8 @@ class IngredientsController extends Controller
             $validated = $request->validate([
                 'unit_id' => 'required|exists:units,id',
                 'name' => 'required|string',
-                'price' => ['required', 'numeric', 'min:0']
+                'price' => ['required', 'numeric', 'min:0'],
+                'stock' => 'sometimes|integer|min:0',
             ]);
 
             $ingredient = Ingredient::create($validated);
@@ -51,7 +52,8 @@ class IngredientsController extends Controller
             $validated = $request->validate([
                 'unit_id' => 'required|exists:units,id',
                 'name' => 'required|string',
-                'price' => ['required', 'numeric', 'min:0']
+                'price' => ['required', 'numeric', 'min:0'],
+                'stock' => 'sometimes|integer|min:0',
             ]);
 
             $ingredient->update($validated);
@@ -83,7 +85,8 @@ class IngredientsController extends Controller
             $validated = $request->validate([
                 'unit_id' => 'sometimes|exists:units,id',
                 'name' => 'sometimes|string',
-                'price' => ['sometimes', 'numeric', 'min:0']
+                'price' => ['sometimes', 'numeric', 'min:0'],
+                'stock' => 'sometimes|integer|min:0',
             ]);
 
             $ingredient->update($validated);
