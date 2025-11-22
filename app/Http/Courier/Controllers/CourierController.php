@@ -73,6 +73,25 @@ class CourierController extends Controller
         ]);
     }
 
+    public function showByUserID($id){
+        try{
+            $courier = Courier::where('user_id', $id)->first();
+            
+            if (!$courier) {
+                return response()->json([
+                    'message' => 'Courier not found'
+                ], 404);
+            }
+            
+            return response()->json($courier);
+        }catch(\Exception $e){
+            return response()->json([
+                'message' => 'Failed to get courier',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function update(UpdateCourierRequest $request, $id)
     {
         DB::beginTransaction();

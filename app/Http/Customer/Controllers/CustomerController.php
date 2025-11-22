@@ -61,6 +61,25 @@ class CustomerController extends Controller
         }
     }
 
+    public function showByUserID($id){
+        try{
+            $customer = Customer::where('user_id', $id)->first();
+            
+            if (!$customer) {
+                return response()->json([
+                    'message' => 'Customer not found'
+                ], 404);
+            }
+            
+            return response()->json($customer);
+        }catch(\Exception $e){
+            return response()->json([
+                'message' => 'Failed to get customer',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function update(CustomerRequest $request, $id)
     {
         DB::beginTransaction();

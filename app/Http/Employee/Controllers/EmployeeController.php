@@ -42,6 +42,25 @@ class EmployeeController extends Controller
         }
     }
 
+    public function showByUserID($id){
+        try{
+            $employee = Employee::where('user_id', $id)->first();
+            
+            if (!$employee) {
+                return response()->json([
+                    'message' => 'Employee not found'
+                ], 404);
+            }
+            
+            return response()->json($employee);
+        }catch(\Exception $e){
+            return response()->json([
+                'message' => 'Failed to get employee',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function store(EmployeeRequest $request)
     {
         DB::beginTransaction();

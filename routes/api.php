@@ -34,15 +34,21 @@ Route::middleware('auth:sanctum')->group(function (){
     //Customer Endpoint
     Route::get('customers', [CustomerController::class, 'index']);
     Route::post('customers', [CustomerController::class, 'store']);
+    Route::get('customers/user/{id}',[CustomerController::class, 'showByUserID']);
     Route::put('customers/{id}', [CustomerController::class, 'update']);
     Route::delete('customers/{id}', [CustomerController::class, 'destroy']);
 
     //Employees Endpoint
     Route::get('employees/{id}', [EmployeeController::class, 'show']);
+    Route::get('employees/user/{id}', [EmployeeController::class, 'showByUserID']);
     Route::get('employees', [EmployeeController::class, 'index']);
     Route::put('employees/{id}', [EmployeeController::class, 'update']);
     Route::post('employees', [EmployeeController::class, 'store']);
     Route::delete('employees/{id}', [EmployeeController::class, 'destroy']);
+    
+    //Couriers Endpoint
+    Route::get('couriers/{id}', [CourierController::class, 'show']);
+    Route::get('couriers/user/{id}', [CourierController::class, 'showByUserID']);
     
     //Branch Endpoint
     Route::post('branchs', [BranchController::class, 'store']);
