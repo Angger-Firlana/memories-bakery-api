@@ -22,7 +22,6 @@ class StoreMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'type_id' => 'required|exists:types,id',
             'branch_id' => 'required|exists:branchs,id',
             'name' => 'required|string|max:100',
@@ -31,10 +30,13 @@ class StoreMenuRequest extends FormRequest
             'validDuration' => 'required|integer|min:1',
             'details' => 'required|array',
             'stock' => 'sometimes|integer|min:0',
-            
-            // validasi tiap item di dalam array details
+
             'details.*.ingredient_id' => 'required|exists:ingredients,id',
             'details.*.quantity' => 'required|numeric|min:1',
+
+            // foto opsional
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
+
 }

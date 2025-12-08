@@ -39,7 +39,8 @@ class ProductionScheduleDetail extends Model
 	protected $fillable = [
 		'production_schedule_id',
 		'menu_id',
-		'quantity'
+		'quantity',
+		'status'
 	];
 
 	public function menu()

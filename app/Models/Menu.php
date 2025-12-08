@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
 	protected $table = 'menus';
+	protected $appends = ['photo_url'];
 
 	protected $casts = [
 		'type_id' => 'int',
@@ -51,6 +52,7 @@ class Menu extends Model
 		'name',
 		'description',
 		'price',
+		'photo',
 		'validDuration',
 		'stock'
 	];
@@ -63,6 +65,13 @@ class Menu extends Model
 	public function type()
 	{
 		return $this->belongsTo(Type::class);
+	}
+	public function getPhotoUrlAttribute()
+	{
+		if ($this->photo) {
+			return asset('storage/' . $this->photo);
+		}
+		return null;
 	}
 
 	public function menu_details()

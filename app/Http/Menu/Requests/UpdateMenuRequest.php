@@ -31,6 +31,8 @@ class UpdateMenuRequest extends FormRequest
             'validDuration' => 'required|integer|min:1',
             'details' => 'sometimes|array',
             'stock' => 'sometimes|integer|min:0',
+            'photo' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
+
             
             // validasi tiap item di dalam array details
             'details.*.ingredient_id' => 'sometimes|exists:ingredients,id',

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Models\Branch;
 use App\Http\Requests\CustomerRequest;
 use Exception;
 
@@ -23,29 +24,40 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
 
-        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL)? 'email' : 'username';
-        $credentials = [$loginType => $request->login, 'password' => $request->password];
+            
 
-        if(!Auth::attempt($credentials)){
+            $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL)? 'email' : 'username';
+            $credentials = [$loginType => $request->login, 'password' => $request->password];
+
+            if(!Auth::attempt($credentials)){
+                return response()->json([
+                    'success' => false,
+                    'message' => "Email/username atau password salah"
+                ], 404);
+            }
+
+            $user = Auth::user();
+            $role = $user->role->role_name ?? 'user'; // default user kalau gak ada role
+            $tokenName = $role . '_token';
+
+            $branch = null;
+
+            if ($role == "employee") {
+                $branch = Branch::find($user->employee?->branch_id);
+            } else if ($role == "courier") {
+                $branch = Branch::find($user->courier?->branch_id);
+            }
+
+            $user->tokens()->delete();
+
+            $token = $user->createToken($tokenName, [$role])->plainTextToken;
             return response()->json([
-                'success' => false,
-                'message' => "Email/username atau password salah"
-            ], 404);
-        }
-
-        $user = Auth::user();
-        $role = $user->role->role_name ?? 'user'; // default user kalau gak ada role
-        $tokenName = $role . '_token';
-
-        $user->tokens()->delete();
-
-        $token = $user->createToken($tokenName, [$role])->plainTextToken;
-        return response()->json([
-            'success' => true,
-            'message' => "Berhasil Login",
-            'user' => $user,
-            'token' => $token
-        ], 200);
+                'success' => true,
+                'message' => "Berhasil Login",
+                'user' => $user,
+                'branch' => $branch,
+                'token' => $token
+            ], 200);
         }catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,

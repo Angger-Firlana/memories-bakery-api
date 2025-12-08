@@ -102,6 +102,9 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::post('/', [ProductionScheduleController::class, 'store']);
         Route::put('/{id}', [ProductionScheduleController::class, 'update']);
         Route::delete('/{id}', [ProductionScheduleController::class, 'destroy']);
+        Route::patch('/{id}/status', [ProductionScheduleController::class, 'updateStatus']);
+
+        Route::patch('/details/{id}/status', [ProductionScheduleController::class, 'updateDetailStatus']);
     });
 
     Route::prefix('productions')->group(function () {
@@ -116,6 +119,8 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::get('/{id}', [OrderController::class, 'show']);
         Route::post('/', [OrderController::class, 'store']);
         Route::put('/{id}', [OrderController::class, 'update']);
+        Route::patch('/{id}/status', [OrderController::class, 'updateStatus']);
+
         Route::delete('/{id}', [OrderController::class, 'destroy']);
     });
 });

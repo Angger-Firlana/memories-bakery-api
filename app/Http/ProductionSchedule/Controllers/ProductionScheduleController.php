@@ -6,6 +6,7 @@ use App\Models\ProductionSchedule;
 use App\Http\ProductionSchedule\Requests\PostProductionScheduleRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ProductionScheduleDetail;
 use App\Http\ProductionSchedule\Requests\PutProductionScheduleRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,7 @@ class ProductionScheduleController extends Controller
 {
     public function index(Request $request)
     {
-        $schedules = ProductionSchedule::with('production_schedule_details');
+        $schedules = ProductionSchedule::with('production_schedule_details.menu');
 
         if ($request->filled('date_from') && $request->filled('date_to')) {
             $schedules->whereBetween('scheduled_date', [
@@ -106,6 +107,45 @@ class ProductionScheduleController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "Failed to create Production Schedule: {$ex->getMessage()}"
+            ], 500);
+        }
+    }
+
+    public function updateStatus($id, Request $request){
+        try{
+            $schedule = ProductionSchedule::findOrFail($id);
+            $schedule->status = $request->status;
+            $schedule->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Production Schedule status updated successfully",
+                'data' => $schedule
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => "Error updating status: " . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateDetailStatus($id, Request $request){
+        //
+        try{
+            $detail = ProductionScheduleDetail::findOrFail($id);
+            $detail->status = $request->status;
+            $detail->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Production Schedule detail status updated successfully",
+                'data' => $detail
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => "Error updating detail status: " . $e->getMessage()
             ], 500);
         }
     }

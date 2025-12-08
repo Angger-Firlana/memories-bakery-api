@@ -44,9 +44,9 @@ class User extends Authenticatable // ✅ ubah ini dari Model ke Authenticatable
         return $this->hasMany(Admin::class);
     }
 
-    public function couriers()
+    public function courier()
     {
-        return $this->hasMany(Courier::class);
+        return $this->hasOne(Courier::class, 'user_id');
     }
 
     public function customers()
@@ -54,9 +54,9 @@ class User extends Authenticatable // ✅ ubah ini dari Model ke Authenticatable
         return $this->hasMany(Customer::class);
     }
 
-    public function employees()
+    public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasOne(Employee::class, 'user_id');
     }
 
     public function managers()
