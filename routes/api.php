@@ -18,6 +18,7 @@ use App\Http\Type\Controllers\TypeController;
 use App\Http\Menu\Controllers\MenuController;
 use App\Http\ProductionSchedule\Controllers\ProductionScheduleController;
 use App\Http\Order\Controllers\OrderController;
+use App\Http\Delivery\Controllers\DeliveryController;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -122,6 +123,16 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::patch('/{id}/status', [OrderController::class, 'updateStatus']);
 
         Route::delete('/{id}', [OrderController::class, 'destroy']);
+    });
+
+    Route::prefix('deliveries')->group(function(){
+        Route::get('/', [DeliveryController::class, 'index']);
+        Route::post('/', [DeliveryController::class, 'store']);
+        Route::patch('/{id}', [DeliveryController::class, 'patch']);
+        Route::put('/{id}', [DeliveryController::class, 'update']);
+        Route::delete('/{id}', [DeliveryController::class, 'destroy']);
+        Route::get('/user/{userId}', [DeliveryController::class, 'getByUser']);
+        Route::get('/{id}', [DeliveryController::class, 'show']); 
     });
 });
 
