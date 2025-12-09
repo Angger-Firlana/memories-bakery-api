@@ -3,9 +3,10 @@
 namespace App\Http\Delivery\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreDeliveryRequest;
-use App\Http\Requests\PutDeliveryRequest;
+use App\Http\Delivery\Requests\StoreDeliveryRequest;
+use App\Http\Delivery\Requests\PutDeliveryRequest;
 use App\Models\Delivery;
+use App\Models\Order;
 
 class DeliveryController extends Controller
 {
@@ -111,6 +112,21 @@ class DeliveryController extends Controller
             $delivery = Delivery::findOrFail($id);
 
             $delivery->update($request->validated());
+            $order = Order::findOrFail($delivery->order_id);
+
+            if($request->status === 'to_ship'){
+                $order->status = 'on_delivery';
+                $order->save();
+            }else if($request->status === 'delivered'){
+                $order->status = 'finished';
+                $order->save();
+            }else if($request->status === 'rejected'){
+                $order->status = 'rejected';
+                $order->save();
+            }else if($request->status === 'confirmation'){
+                $order->status = 'confirmation';
+                $order->save();
+            }
 
             return response()->json([
                 'success' => true,

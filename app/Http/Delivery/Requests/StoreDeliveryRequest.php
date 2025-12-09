@@ -3,6 +3,7 @@
 namespace App\Http\Delivery\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreDeliveryRequest extends FormRequest
 {
@@ -24,11 +25,11 @@ class StoreDeliveryRequest extends FormRequest
         return [
             //
             'order_id' => 'required|exists:orders,id',
-            'courier_id' => 'required|exist:couriers,id',
+            'courier_id' => 'required|exists:couriers,id',
             'address' => 'required|string|max:255',
             'fee'=> 'required|integer|min:0',
             'delivery_date' => 'required|date|after_or_equal:today',
-            'status' => ['required', Rule::in(['pending', 'confirmation', 'to_ship', 'rejected', 'shipped'])],
+            'status' => 'required|in:pending,confirmation,to_ship,rejected,shipped',
         ];
     }
 }

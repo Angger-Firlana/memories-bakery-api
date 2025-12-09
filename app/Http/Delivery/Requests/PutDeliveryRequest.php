@@ -3,6 +3,7 @@
 namespace App\Http\Delivery\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PutDeliveryRequest extends FormRequest
 {
@@ -23,11 +24,11 @@ class PutDeliveryRequest extends FormRequest
     {
         return [
             'order_id' => 'sometimes|exists:orders,id',
-            'courier_id' => 'sometimes|exist:couriers,id',
+            'courier_id' => 'sometimes|exists:couriers,id',
             'address' => 'sometimes|string|max:255',
             'fee'=> 'sometimes|integer|min:0',
             'delivery_date' => 'sometimes|date|after_or_equal:today',
-            'status' => ['required', Rule::in(['pending', 'confirmation', 'to_ship', 'rejected','shipped'])],
+            'status' => 'sometimes|in:pending,confirmation,to_ship,rejected,shipped',
         ];
     }
 }

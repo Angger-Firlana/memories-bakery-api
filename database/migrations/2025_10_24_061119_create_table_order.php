@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamp('order_date');
             $table->string('address');
             $table->string('customer_phone');
-            $table->enum('status', ['pending', 'confirmation', 'finished', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'confirmation', 'finished', 'rejected', 'on_delivery'])->default('pending');
             $table->timestamps();
         });
     }
